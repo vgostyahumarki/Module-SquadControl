@@ -23,7 +23,7 @@
  */
 
 require_once("modules/config_games/server_config_parser.php");
-require_once('modules/rcon_squad/SquadServer/SquadServer.php');
+#require_once('SquadServer/SquadServer.php');
 require_once('includes/lib_remote.php');
 
 function exec_ogp_module()
