@@ -27,6 +27,6 @@ $module_title = "Rcon_Squad";
 $module_version = "1.0";
 $db_version = 0;
 $module_required = TRUE;
-$module_menus = array( array( 'subpage' => 'rcon_squad', 'name'=>'Rcon Squad', 'group'=>'admin' ) );
+$module_menus = array( array( 'subpage' => 'rcon_squad', 'name'=>'RCON SQUAD', 'group'=>'admin' ) );
 ?>
 

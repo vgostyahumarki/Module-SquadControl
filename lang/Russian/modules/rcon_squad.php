@@ -22,7 +22,7 @@
  *
  */
 
-define('OGP_LANG_rcon_command_title', "RCON команда");
+define('OGP_LANG_rcon_command_title', "RCON SQUAD COMMANDER");
 define('OGP_LANG_has_sent_to', "Отправил");
 define('OGP_LANG_need_set_remote_pass', "Необходимо установить удаленный пароль");
 define('OGP_LANG_before_sending_rcon_com', "Перед отправкой rcon команды");
