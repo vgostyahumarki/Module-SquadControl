@@ -23,13 +23,13 @@
  */
 
 require_once("modules/config_games/server_config_parser.php");
-require_once('includes/lib_remote.php');
-
 require_once('modules/rcon_squad/SquadServer/SquadServer.php');
+require_once('includes/lib_remote.php');
 
 function exec_ogp_module()
 {
 	global $db;
+
 	$server_homes = $db->getIpPorts();
 
 	if ( !$server_homes )
@@ -37,24 +37,41 @@ function exec_ogp_module()
 		return;
 	}
 
+	$select_game = "<form method=POST >\n<table class=center >\n\n<tr>\n";
+
+	$i = 0;
+	$i2 = 0;
+	$colspan = "";
 	foreach ( $server_homes as $server_home )
 	{
-		$server = new SquadServer(new ServerConnectionInfo($server_home['agent_ip'], 21114, $server_home['control_password']));
-		$players = $server->serverPopulation();
-
-		echo '<table><tr><td>PREFIX</td><td>Part</td>File</td></tr>';
-		foreach ($players as $line)
+		$server_xml = read_server_config(SERVER_CONFIG_LOCATION."/".$server_home['home_cfg_file']);
+		$remote = new OGPRemoteLibrary($server_home['agent_ip'],$server_home['agent_port'],$server_home['encryption_key'],$server_home['timeout']);
+		$screen_running = $remote->is_screen_running(OGP_SCREEN_TYPE_HOME,$server_home['home_id']) === 1;
+		if( ( $server_xml->control_protocol == 'rcon' OR $server_xml->control_protocol == 'rcon2' OR 
+		   @$server_xml->gameq_query_name == "minecraft" OR $server_xml->control_protocol == 'lcon' ) AND $screen_running )
 		{
-			$pieces = explode(";", $line);
-			$count=count($pieces);
 
-			echo '<tr>';
-			for ($counter=0; $counter <$count; $counter++)
+			$i2++;
+			if ( count( $server_homes ) == $i2 )
 			{
-				echo '<td>'.$pieces[$counter].'<td>';
-			} 
-		echo '</tr>';
+				$i = 0;
+			}
+			$control = ( $i == 0 ) ?  "</td>\n" : "</td>\n</tr>\n<tr>\n";
+			$display_ip = checkDisplayPublicIP($server_home['display_public_ip'],$server_home['ip'] != $server_home['agent_ip'] ? $server_home['ip'] : $server_home['agent_ip']);
+			$select_game .= "<td class=left ><input type=checkbox name='action-". $server_home['ip'] . "-" . $server_home['port'] .
+							"' value='". $server_home['home_id'] . "-" . $server_home['mod_id'] . "-" . $server_home['ip'] .
+							"-" . $server_home['port'] . "' />" . $server_home['home_name'] . " - " . $display_ip .
+							":" . $server_home['port'] . $control;
+
+			$i = ( $control == "</td>\n" ) ? 1 : 0;
 		}
+	}
+	$select_game .= '<input type="button" name="check-all" id="check-all" value="'.get_lang('check-all').'">'.
+					'<input type="button" name="uncheck-all" id="uncheck-all" value="'.get_lang('uncheck-all').'">'.
+					"</table>\n<table class='center rcon' ><tr><td>".get_lang('rcon_command_title').
+					"</td>\n<td>\n<input class=rcon type=text name=rcon_command size=200 style='width:550px;' />\n</td>\n".
+					"<td><input type=submit name=remote_send_rcon_command value='".get_lang('send_command')."' />\n</td>\n".
+					"</table>\n</form>\n";
 ?>
 <h2>
 	<?php print_lang('rcon_command_title'); ?>
@@ -132,4 +149,4 @@ $('#uncheck-all').click(function() {
 }
 ?>
 
-?>
+
