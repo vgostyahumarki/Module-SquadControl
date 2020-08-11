@@ -55,6 +55,81 @@ function exec_ogp_module()
 			} 
 		echo '</tr>';
 		}
+?>
+<h2>
+	<?php print_lang('rcon_command_title'); ?>
+</h2>
+<?php
+	echo $select_game;
+	
+	if(isset($_POST['remote_send_rcon_command']) AND $_POST['rcon_command'] != "" )
+	{
+		$rconCommand = $_POST['rcon_command'];
+		foreach($_POST as $key => $value)
+		{
+			$return = "";
+			if( preg_match( "/^action/", $key ) )
+			{
+				list($home_id,$mod_id,$ip,$port) = explode("-", $value);
+				$home_info = $db->getGameHome($home_id);
+				$remote = new OGPRemoteLibrary($home_info['agent_ip'],$home_info['agent_port'],$home_info['encryption_key'],$home_info['timeout']);
+				$server_xml = read_server_config(SERVER_CONFIG_LOCATION."/".$home_info['home_cfg_file']);
+				$control_type = isset($server_xml->control_protocol_type) ? $server_xml->control_protocol_type : "";
+				
+				if ( isset($server_xml->gameq_query_name) and  $server_xml->gameq_query_name == "minecraft" )
+				{
+					require_once("modules/gamemanager/MinecraftRcon.class.php");
+					$rcon_port = $port+10;
+					$rcon = new MinecraftRcon;
+					if( $rcon->Connect($ip, $rcon_port, $home_info['control_password']) )
+					{
+						$return = $rcon->Command($rconCommand);
+						if ($return);
+							echo "<div class='bloc' ><h4>".get_lang('rcon_command_title').": [".$rconCommand."] ".
+								  get_lang('has_sent_to')." ". $home_info['home_name']."</h4><xmp style='overflow:scroll;' >$return</xmp></div>";
+								  
+						$rcon->Disconnect();
+						
+					}
+					else
+					{
+						echo "".get_lang('need_set_remote_pass')." ".$home_info['home_name']." ".get_lang('before_sending_rcon_com')."<br>";
+					}
+				}
+				else
+				{
+					$remote_retval = $remote->remote_send_rcon_command( $home_id, $ip, $port, $server_xml->control_protocol, $home_info['control_password'],$control_type,$rconCommand,$return);
+					
+					if ( $remote_retval === -1 )
+					{
+						print_failure(get_lang("agent_offline"));
+					}
+					elseif ( $remote_retval === 1 )
+					{
+							echo "<div class='bloc' ><h4>".get_lang('rcon_command_title').": [".$rconCommand."] ".
+								  get_lang('has_sent_to')." ". $home_info['home_name']."</h4><xmp style='overflow:scroll;' >$return</xmp></div>";
+					}
+					elseif ( $remote_retval === -10 )
+					{
+						echo "".get_lang('need_set_remote_pass')." ".$home_info['home_name']." ".get_lang('before_sending_rcon_com')."<br>";
+					}
+				}
+			}
+		}
 	}
+?>
+<script type="text/javascript">
+$('#check-all').click(function() {
+    $('input:checkbox').attr('checked', true).prop('checked', true);
+    return false;
+});
+$('#uncheck-all').click(function() {
+    $('input:checkbox').attr('checked', false).prop('checked', false);
+    return false;
+});
+</script>
+<?php
 }
+?>
+
 ?>
