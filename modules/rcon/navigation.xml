@@ -1,0 +1,3 @@
+<navigation>
+  <page key="rcon_squad" file="rcon_squad.php" access="admin" />
+</navigation>
