@@ -25,8 +25,11 @@
 require_once("modules/config_games/server_config_parser.php");
 require_once('includes/lib_remote.php');
 
+require_once('modules/rcon_squad/SquadServer/SquadServer.php');
+
 function exec_ogp_module()
 {
+/*
 	global $db;
 
 	$server_homes = $db->getIpPorts();
@@ -146,4 +149,6 @@ $('#uncheck-all').click(function() {
 </script>
 <?php
 }
+
+*/
 ?>
