@@ -43,7 +43,7 @@ function exec_ogp_module()
 		$players = $server->serverPopulation();
 
 		echo '<table><tr><td>PREFIX</td><td>Part</td>File</td></tr>';
-		foreach ($Inputfile as $line)
+		foreach ($players as $line)
 		{
 			$pieces = explode(";", $line);
 			$count=count($pieces);
