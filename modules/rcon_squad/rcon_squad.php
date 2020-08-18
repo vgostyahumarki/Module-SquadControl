@@ -22,8 +22,11 @@
  *
  */
 
-define("module_path", "modules/rcon_squad/");
-require_once(module_path . 'includes/squad_rc.php');
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
+require_once("modules/rcon_squad/include/squad_rc.php");
 require_once("modules/config_games/server_config_parser.php");
 require_once('includes/lib_remote.php');
 
@@ -32,12 +35,19 @@ function exec_ogp_module()
 	global $db;
 
 	$server_homes = $db->getIpPorts();
-
+	
+	$server = new SquadServer(new ServerConnectionInfo('92.63.110.116', 21114, 'c3qlgpyu'));
+	$map = $server->currentMap();
+	$players = $server->listPlayers();
+	
+	
+	
 	if ( !$server_homes )
 	{
 		return;
 	}
-
+	
+	
 	$select_game = "<form method=POST >\n<table class=center >\n\n<tr>\n";
 
 	$i = 0;
@@ -74,9 +84,158 @@ function exec_ogp_module()
 					"<td><input type=submit name=remote_send_rcon_command value='".get_lang('send_command')."' />\n</td>\n".
 					"</table>\n</form>\n";
 ?>
+
 <h2>
-	<?php print_lang('rcon_command_title'); ?>
+	<?php print_lang('rcon_command_title'); 
+
+	?>
 </h2>
+
+
+<?php
+
+$reader = function & ($object, $property) {
+    $value = & Closure::bind(function & () use ($property) {
+        return $this->$property;
+    }, $object, $object)->__invoke();
+
+    return $value;
+};
+
+
+echo '<form method="post">';
+echo '<select name="squadServerSelect">';
+echo '<option value=""> Выберите сервер... </option>';
+
+$errorMessage = '';
+
+foreach ( $server_homes as $server_home )
+{
+		echo "<option value='{$server_home['remote_server_id']}'>{$server_home['home_name']}</option>";
+		//$server_id = $server_home['remote_server_id'];
+		//$echo = print_r ("<br>" . $server_id);
+		//$echo = print_r ($server_home['home_name']);
+		//$echo = "<br>";
+		//$echo = print_r ($server_home['agent_ip']);
+		//$echo = "<br>";
+		//$echo = print_r ($server_home['control_password']);
+		//$echo = "<br>";
+}
+
+echo '</select>';
+echo '<input type=submit name=selectedSquadServer value="Выбрать">';
+echo '</form>';
+
+if(!isset($_POST['selectedSquadServer'])) 
+{
+  $errorMessage .= "<h1>You forgot to select your Server!</h1>";
+}
+
+if(isset($_POST['selectedSquadServer']))
+{
+	$serverID = $_POST['squadServerSelect'];
+
+	if($serverID == "") 
+	{
+		$errorMessage .= "<p>Вы забыли выбрать сервер!</p>";
+	}
+	else
+	{
+		foreach ( $server_homes as $server_home )
+		{
+			if($serverID == $server_home['remote_server_id'])
+			{
+				$server = new SquadServer(new ServerConnectionInfo($server_home['agent_ip'], 21114, $server_home['control_password']));
+				echo "<p>Выбранный сервер: {$server_home['home_name']}</p>";
+				$check_map = $server->nextMap();
+				if(!$check_map)
+				{
+					$check_map = 'Неизвестно';
+				}
+				if($check_map == '/Game/Maps/TransitionMap')
+				{
+					$check_map = 'Смена карты';
+				}
+				echo "<p>Текущая карта: {$server->currentMap()}, Следующая карта: {$check_map}</p>";
+				$players = $server->listPlayers();
+				$player_count = count($players);
+				echo "<p>Игроки: {$player_count}</p>";
+				$squads = $server->serverPopulation();
+				//echo "<br>";
+				//var_dump($players);
+				//echo "<br>";
+				
+				
+				foreach($squads as $team)
+				{
+					echo "<details>";
+					echo "<summary>Сторона: {$reader($team,'name')} </summary>";
+					
+					$squads = $reader($team,'squads');
+					foreach($squads as $squad)
+					{
+						
+						$locked_squad = $reader($squad,'locked');
+						$locked_text = "Открытый";
+						if($locked_squad)
+						{
+							$locked_text = 'Закрытый';
+						}
+						
+						$players_in_squad = $reader($squad,'players');
+						
+						echo "<details>";
+						echo "<summary>Отряд: {$reader($squad,'name')}, Размер: {$reader($squad,'size')}, Статус: {$locked_text}</summary>";
+						
+						echo "<details>";
+						echo "<summary>Игроки</summary>";
+						
+						echo "<table class='squad_table'>";
+						echo "<thead>";
+						echo "<tr>";
+						echo "<th class='tg-0lax'>ID</th>";
+						echo "<th class='tg-0lax'>NAME</th>";
+						echo "<th class='tg-0lax'>STEAM_ID</th>";
+						echo "</tr>";
+						echo "</thead>";
+						
+						
+						foreach($players_in_squad as $player)
+						{
+							echo "<tbody>";
+							echo "<tr>";
+							echo "<td class='tg-0lax'>{$reader($player,'id')}</td>";
+							echo "<td class='tg-0lax'>{$reader($player,'name')}</td>";
+							
+							//$steam_url = 'https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=F2CB385DD44216ACDD63AFD84E8DC527&steamids=';
+							$steam_id = $reader($player,'steamId');
+							//$content = file_get_contents($steam_url . $steam_id);
+							
+							//$data = (array)json_decode($content)->response->players[0];
+							echo "<td class='tg-0lax'>{$steam_id}</td>"; //{$data['profileurl']}</td>";
+							echo "</tr>";
+							echo "</tbody>";
+						}
+						
+						echo "</table>";
+						echo "</details>";
+						echo "</details>";
+						
+					}
+					
+					echo "</details>";
+				}
+				
+				//var_dump($players);
+			}
+		}
+	}
+}
+
+echo $errorMessage;
+$server->disconnect();
+?>
+
 <?php
 	echo $select_game;
 	
