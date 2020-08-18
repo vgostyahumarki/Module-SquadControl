@@ -22,8 +22,9 @@
  *
  */
 
+define("module_path", "modules/rcon_squad/");
+require_once(module_path . 'includes/squad_rc.php');
 require_once("modules/config_games/server_config_parser.php");
-require_once('modules/rcon_squad/include/SQUAD_RCON.php');
 require_once('includes/lib_remote.php');
 
 function exec_ogp_module()
