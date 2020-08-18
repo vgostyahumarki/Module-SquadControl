@@ -24,7 +24,6 @@
 
 require_once("modules/config_games/server_config_parser.php");
 require_once('includes/lib_remote.php');
-require ('include/SquadServer.php');
 
 function exec_ogp_module()
 {
@@ -148,5 +147,3 @@ $('#uncheck-all').click(function() {
 <?php
 }
 ?>
-
-
