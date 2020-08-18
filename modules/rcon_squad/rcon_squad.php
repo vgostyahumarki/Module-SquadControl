@@ -31,6 +31,8 @@ function exec_ogp_module()
 {
 	global $db;
 
+    echo "<h2>".get_lang("rcon_command_title")."</h2>\n";
+
 	$server_homes = $db->getIpPorts();
 
 	if ( !$server_homes )
