@@ -202,7 +202,12 @@ if(isset($_POST['selectedSquadServer']))
 					echo "<input type='text' name='reason' value='{$player_name}'>";
 					$time_now_for_datetime = gmdate('Y-m-d\TH:i:s');
 					echo "<input id='datetime' name='datetime' type='datetime-local' value='{$time_now_for_datetime}' step='1'>";
-					echo '<input type=submit name=selectedUserAction value="Выбрать">';
+					
+					//echo '<input type=submit name=selectedUserAction value="Выбрать">';
+					echo "<input type=submit name=selectedUserAction value='";
+					print_lang('SELECT');
+					echo "'>";
+
 					echo '</form>';
 					echo "</td>";
 									
