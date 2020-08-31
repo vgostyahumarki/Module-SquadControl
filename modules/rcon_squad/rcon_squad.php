@@ -107,7 +107,9 @@ if(isset($_POST['selectedSquadServer']))
 			if($serverID == $server_home['remote_server_id'])
 			{
 				$server = new SquadServer(new ServerConnectionInfo($server_home['agent_ip'], 21114, $server_home['control_password']));
-				echo "<p>Выбранный сервер: {$server_home['home_name']}</p>";
+				echo "<p>";
+				print_lang('SELECTED_SERVER');
+				echo "{$server_home['home_name']}</p>";
 				
 			}
 		}

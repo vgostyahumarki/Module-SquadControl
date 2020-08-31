@@ -22,7 +22,10 @@
  *
  */
 
+ // OGP_LANG_
+
 define('OGP_LANG_rcon_command_title', "RCON SQUAD COMMANDER");
 define('OGP_LANG_SELECT_SERVER', "Выберите сервер...");
 define('OGP_LANG_SELECT', "Выбрать");
+define('OGP_LANG_SELECTED_SERVER',"Выбранный сервер: ");
 ?>
