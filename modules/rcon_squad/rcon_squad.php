@@ -66,6 +66,9 @@ $reader = function & ($object, $property) {
 
 
 echo '<form method="post">';
+echo "<input type=submit name=selectedSquadServer value='";
+print_lang('SELECT');
+echo "'>";
 echo '<select name="squadServerSelect">';
 echo '<option value="">';
 print_lang('SELECT_SERVER');
@@ -87,9 +90,6 @@ foreach ( $server_homes as $server_home )
 }
 
 echo '</select>';
-echo "<input type=submit name=selectedSquadServer value='";
-print_lang('SELECT');
-echo "'>";
 echo '</form>';
 
 if(isset($_POST['selectedSquadServer']))
