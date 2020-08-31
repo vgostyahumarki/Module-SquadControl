@@ -130,6 +130,77 @@ if(isset($_POST['selectedSquadServer']))
 				echo "</tr>";
 				echo "</tbody>";
 				echo "</table>";
+				
+				echo "<center><p>Лист игроков";
+				print_lang('LIST_PLAYERS');
+				echo "<p></center>";
+				echo "<table class='squad_table'>";
+				echo "<thead>";
+				echo "<tr>";
+				echo "<th>ID</th>";
+				echo "<th>NAME</th>";
+				echo "<th>STEAM_ID</th>";
+				//echo "<th>СТОРОНА</th>";
+				//echo "<th>КОММАНДА</th>";
+				echo "<th>";
+				print_lang('ACTION');
+				echo "</th>";
+				echo "</tr>";
+				echo "</thead>";
+				
+				foreach($players as $player)
+				{
+					$player_id = $reader($player,'id');
+					$player_name = $reader($player,'name');
+					$steam_id = $reader($player,'steamId');
+					
+					echo "<tbody>";
+					echo "<tr>";
+					echo "<td><center>{$player_id}</center></td>";
+					echo "<td>{$player_name}</td>";
+									
+					//$steam_url = 'https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=F2CB385DD44216ACDD63AFD84E8DC527&steamids=';
+					//$content = file_get_contents($steam_url . $steam_id);
+									
+					//$data = (array)json_decode($content)->response->players[0];
+					echo "<td>{$steam_id}</td>"; //{$data['profileurl']}</td>";
+					
+					/*
+					$team = $reader($player,'team');
+					if($team == NULL)
+					{
+						$team = "НЕТ";
+					}
+					echo "<td><center>{$team}</center></td>"; 
+					$squad = $reader($player,'squad');
+					if($squad == NULL)
+					{
+						$squad = "НЕТ";
+					}
+					
+					echo "<td><center>{$squad}</center></td>";
+					*/
+					echo "<td>";
+									
+					echo '<form method="post">';
+					echo '<select name="squadUserAction">';
+					echo '<option value=""> Выберите Действие... </option>';
+					echo "<option value='warn_{$steam_id}'> Предупредить </option>";
+					echo "<option value='kick_{$steam_id}'> Кикнуть </option>";
+					echo "<option value='ban_{$steam_id}'> Бан </option>";
+					echo '</select>';
+					echo "<input type='text' name='reason' value='{$player_name}'>";
+					$time_now_for_datetime = gmdate('Y-m-d\TH:i:s');
+					echo "<input id='datetime' name='datetime' type='datetime-local' value='{$time_now_for_datetime}' step='1'>";
+					echo '<input type=submit name=selectedUserAction value="Выбрать">';
+					echo '</form>';
+					echo "</td>";
+									
+					echo "</tr>";
+					echo "</tbody>";
+				}
+								
+				echo "</table>"; 
 			}
 		}
 	}

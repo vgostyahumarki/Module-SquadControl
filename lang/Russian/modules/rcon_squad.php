@@ -31,4 +31,6 @@ define('OGP_LANG_SELECTED_SERVER',"Выбранный сервер");
 define('OGP_LANG_PLAYERS',"Игроки");
 define('OGP_LANG_MAP_NOW',"Текущая карта");
 define('OGP_LANG_NEXT_MAP',"Следующая карта");
+define('OGP_LANG_LIST_PLAYERS',"ЛИСТ ИГРОКОВ");
+define('OGP_LANG_ACTION',"ДЕЙСТВИЕ");
 ?>
