@@ -108,6 +108,7 @@ if(isset($_POST['selectedSquadServer']))
 					$check_map = 'Смена карты';
 				}
 				
+				$current_map = $server->currentMap();
 				$players = $server->listPlayers();
 				$player_count = count($players);
 				echo '<th><p>';
@@ -125,7 +126,7 @@ if(isset($_POST['selectedSquadServer']))
 				echo "<tr>";
 				echo "<td>{$server_home['home_name']}</td>";
 				echo "<td>{$player_count}</td>";
-				echo "<td>{$server->currentMap()}</td>";
+				echo "<td>{$current_map}</td>";
 				echo "<td>{$check_map}</td>";
 				echo "</tr>";
 				echo "</tbody>";
@@ -182,8 +183,9 @@ if(isset($_POST['selectedSquadServer']))
 					echo "<td><center>{$squad}</center></td>";
 					*/
 					echo "<td>";
-									
+					
 					echo '<form method="post">';
+					
 					echo '<select name="squadUserAction">';
 					echo '<option value="">';
 					print_lang('ACTION_CHOOSE');
@@ -199,20 +201,22 @@ if(isset($_POST['selectedSquadServer']))
 					echo "</option>";
 
 					echo '</select>';
-					echo "<input type='text' name='reason' value='{$player_name}'>";
+					
+					echo "<input size='20' type='text' name='reason' value='{$player_name}'>";
 					$time_now_for_datetime = gmdate('Y-m-d\TH:i:s');
 					echo "<input id='datetime' name='datetime' type='datetime-local' value='{$time_now_for_datetime}' step='1'>";
 					
 					//echo '<input type=submit name=selectedUserAction value="Выбрать">';
-					echo "<input type=submit name=selectedUserAction value='";
+					echo "<input width='50px' type=submit name=selectedUserAction value='";
 					print_lang('SELECT');
 					echo "'>";
 
-					echo '</form>';
+					echo '</form>';			
 					echo "</td>";
 									
 					echo "</tr>";
 					echo "</tbody>";
+				
 				}
 								
 				echo "</table>";
@@ -331,3 +335,7 @@ echo $errorMessage;
 
 }
 ?>
+<style>
+form {display: inline-flex;}
+.form-control {width: auto}
+</style>
