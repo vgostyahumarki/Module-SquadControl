@@ -87,7 +87,8 @@ foreach ( $server_homes as $server_home )
 }
 
 echo '</select>';
-echo '<input type=submit name=selectedSquadServer value="Выбрать">';
+$LANG_SELECT = print_lang('LANG_SELECT');
+echo "<input type=submit name=selectedSquadServer value='{$LANG_SELECT}'>";
 echo '</form>';
 
 if(isset($_POST['selectedSquadServer']))
