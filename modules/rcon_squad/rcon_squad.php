@@ -67,7 +67,9 @@ $reader = function & ($object, $property) {
 
 echo '<form method="post">';
 echo '<select name="squadServerSelect">';
-echo '<option value=""> Выберите сервер... </option>';
+echo '<option value="">';
+print_lang('SELECT_SERVER');
+echo '</option>';
 
 $errorMessage = '';
 
