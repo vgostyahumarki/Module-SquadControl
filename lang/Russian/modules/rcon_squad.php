@@ -27,8 +27,8 @@
 define('OGP_LANG_rcon_command_title', "RCON SQUAD COMMANDER");
 define('OGP_LANG_SELECT_SERVER', "Выберите сервер...");
 define('OGP_LANG_SELECT', "Выбрать");
-define('OGP_LANG_SELECTED_SERVER',"Выбранный сервер: ");
-define('OGP_LANG_PLAYERS',"Игроки: ");
-define('OGP_LANG_MAP_NOW',"Текущая карта: ");
-define('OGP_LANG_NEXT_MAP',"Следующая карта: ");
+define('OGP_LANG_SELECTED_SERVER',"Выбранный сервер");
+define('OGP_LANG_PLAYERS',"Игроки");
+define('OGP_LANG_MAP_NOW',"Текущая карта");
+define('OGP_LANG_NEXT_MAP',"Следующая карта");
 ?>

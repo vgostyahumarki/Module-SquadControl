@@ -92,9 +92,11 @@ if(isset($_POST['selectedSquadServer']))
 			if($serverID == $server_home['remote_server_id'])
 			{
 				$server = new SquadServer(new ServerConnectionInfo($server_home['agent_ip'], 21114, $server_home['control_password']));
-				echo "<p>";
+
+				echo '<table><thead><tr >';
+				echo '<th><p>';
 				print_lang('SELECTED_SERVER');
-				echo "{$server_home['home_name']}</p>";
+				echo '</p></th>';
 				
 				$check_map = $server->nextMap();
 				if(!$check_map)
@@ -108,15 +110,26 @@ if(isset($_POST['selectedSquadServer']))
 				
 				$players = $server->listPlayers();
 				$player_count = count($players);
-				
-				echo "<p>";
+				echo '<th><p>';
 				print_lang('PLAYERS');
-				echo "{$player_count}";
+				echo '</p></th>';
+				echo '<th><p>';
 				print_lang('MAP_NOW');
-				echo "{$server->currentMap()}";
+				echo '</p></th>';
+				echo '<th><p>';
 				print_lang('NEXT_MAP');
-				echo "{$check_map}";
-				echo "</p>";
+				echo '</p></th>';
+				echo '</thead></tr>';
+				
+				echo "<tbody>";
+				echo "<tr>";
+				echo "<td>{$server_home['home_name']}</td>";
+				echo "<td>{$player_count}</td>";
+				echo "<td>{$server->currentMap()}</td>";
+				echo "<td>{$check_map}</td>";
+				echo "</tr>";
+				echo "</tbody>";
+				echo "</table>";
 			}
 		}
 	}
