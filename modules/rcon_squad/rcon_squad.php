@@ -131,7 +131,7 @@ if(isset($_POST['selectedSquadServer']))
 				echo "</tbody>";
 				echo "</table>";
 				
-				echo "<center><p>Лист игроков";
+				echo "<center><p>";
 				print_lang('LIST_PLAYERS');
 				echo "<p></center>";
 				echo "<table class='squad_table'>";
