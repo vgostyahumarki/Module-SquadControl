@@ -185,10 +185,19 @@ if(isset($_POST['selectedSquadServer']))
 									
 					echo '<form method="post">';
 					echo '<select name="squadUserAction">';
-					echo '<option value=""> Выберите Действие... </option>';
-					echo "<option value='warn_{$steam_id}'> Предупредить </option>";
-					echo "<option value='kick_{$steam_id}'> Кикнуть </option>";
-					echo "<option value='ban_{$steam_id}'> Бан </option>";
+					echo '<option value="">';
+					print_lang('ACTION_CHOOSE');
+					echo '</option>';
+					echo "<option value='warn_{$steam_id}'>";
+					print_lang('ACTION_WARN');
+					echo "</option>";
+					echo "<option value='kick_{$steam_id}'>";
+					print_lang('ACTION_KICK');
+					echo "</option>";
+					echo "<option value='ban_{$steam_id}'>";
+					print_lang('ACTION_BAN');
+					echo "</option>";
+
 					echo '</select>';
 					echo "<input type='text' name='reason' value='{$player_name}'>";
 					$time_now_for_datetime = gmdate('Y-m-d\TH:i:s');

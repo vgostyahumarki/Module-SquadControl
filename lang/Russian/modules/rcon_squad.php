@@ -33,6 +33,10 @@ define('OGP_LANG_MAP_NOW',"Текущая карта");
 define('OGP_LANG_NEXT_MAP',"Следующая карта");
 define('OGP_LANG_LIST_PLAYERS',"ЛИСТ ИГРОКОВ");
 define('OGP_LANG_ACTION',"ДЕЙСТВИЕ");
-define('OGP_LANG_LIST_5_MIN_INFO',"Лист игроков которые вышли (Хранится 5 минут)");
+define('OGP_LANG_LIST_5_MIN_INFO',"Лист игроков которые вышли (Хранится 5 минут)"); Кикнуть
 define('OGP_LANG_DISCONNECTED_TIME_AGO',"Вышел минут назад");
+define('OGP_LANG_ACTION_CHOOSE','Выберите Действие...');
+define('OGP_LANG_ACTION_WARN','Предупредить');
+define('OGP_LANG_ACTION_KICK','Кикнуть');
+define('OGP_LANG_ACTION_BAN','Бан');
 ?>
