@@ -64,12 +64,8 @@ $reader = function & ($object, $property) {
     return $value;
 };
 
-
-echo '<form method="post">';
-echo "<input type=submit name=selectedSquadServer value='";
-print_lang('SELECT');
-echo "'>";
-echo '<select name="squadServerSelect">';
+echo '<table><thead><tr><form method="post">';
+echo '<th><select name="squadServerSelect">';
 echo '<option value="">';
 print_lang('SELECT_SERVER');
 echo '</option>';
@@ -79,18 +75,13 @@ $errorMessage = '';
 foreach ( $server_homes as $server_home )
 {
 		echo "<option value='{$server_home['remote_server_id']}'>{$server_home['home_name']}</option>";
-		//$server_id = $server_home['remote_server_id'];
-		//$echo = print_r ("<br>" . $server_id);
-		//$echo = print_r ($server_home['home_name']);
-		//$echo = "<br>";
-		//$echo = print_r ($server_home['agent_ip']);
-		//$echo = "<br>";
-		//$echo = print_r ($server_home['control_password']);
-		//$echo = "<br>";
 }
 
-echo '</select>';
-echo '</form>';
+echo '</select></th>';
+echo "<th><input type=submit name=selectedSquadServer value='";
+print_lang('SELECT');
+echo "'></th>";
+echo '</form></tr></thead></table>';
 
 if(isset($_POST['selectedSquadServer']))
 {
