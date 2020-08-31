@@ -96,6 +96,27 @@ if(isset($_POST['selectedSquadServer']))
 				print_lang('SELECTED_SERVER');
 				echo "{$server_home['home_name']}</p>";
 				
+				$check_map = $server->nextMap();
+				if(!$check_map)
+				{
+					$check_map = 'Неизвестно';
+				}
+				if($check_map == '/Game/Maps/TransitionMap')
+				{
+					$check_map = 'Смена карты';
+				}
+				
+				$players = $server->listPlayers();
+				$player_count = count($players);
+				
+				echo "<p>";
+				print_lang('PLAYERS');
+				echo "{$player_count}";
+				print_lang('MAP_NOW');
+				echo "{$server->currentMap()}";
+				print_lang('NEXT_MAP');
+				echo "{$check_map}";
+				echo "</p>";
 			}
 		}
 	}
