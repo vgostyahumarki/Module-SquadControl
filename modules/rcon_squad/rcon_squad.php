@@ -131,8 +131,9 @@ if(isset($_POST['selectedSquadServer']))
 				echo "</tbody>";
 				echo "</table>";
 				
+				
 				echo "<center><p>";
-				print_lang('LIST_PLAYERS');
+				print_lang('LIST_PLAYERS'); 
 				echo "<p></center>";
 				echo "<table class='squad_table'>";
 				echo "<thead>";
@@ -200,12 +201,117 @@ if(isset($_POST['selectedSquadServer']))
 					echo "</tbody>";
 				}
 								
-				echo "</table>"; 
+				echo "</table>";
+				
+				echo "<br>";
+				echo "<p>";
+				print_lang('LIST_5_MIN_INFO');
+				echo "<p>";
+				
+				echo "<table class='disconnected_players'>";
+				echo "<thead>";
+				echo "<tr>";
+				echo "<th>ID</th>";
+				echo "<th>NAME</th>";
+				echo "<th>STEAM_ID</th>";
+				echo "<th>";
+				print_lang('DISCONNECTED_TIME_AGO');
+				echo "</th>";
+				//echo "<th>ДЕЙСТВИЕ</th>";
+				echo "</tr>";
+				echo "</thead>";
+				
+				$get_disconnected_players = $server->listDisconnectedPlayers();
+				foreach($get_disconnected_players as $player)
+				{
+					$player_id = $reader($player,'id');
+					$player_name = $reader($player,'name');
+					$steam_id = $reader($player,'steamId');
+					
+					echo "<tbody>";
+					echo "<tr>";
+					echo "<td>{$player_id}</td>";
+					echo "<td>{$player_name}</td>";
+					echo "<td>{$steam_id}</td>";
+					
+					$time_disconnect = gmdate("H:i:s", $reader($player,'disconnectedSince'));
+					echo "<td>{$time_disconnect}</td>";
+					/*
+					echo "<td>";
+					echo '<form method="post">';
+					echo '<select name="squadUserAction">';
+					echo '<option value=""> Выберите Действие... </option>';
+					echo "<option value='warn_{$steam_id}'> Предупредить </option>";
+					echo "<option value='kick_{$steam_id}'> Кикнуть </option>";
+					echo "<option value='ban_{$steam_id}'> Бан </option>";
+					echo '</select>';
+					echo "<input type='text' name='reason' value='{$player_name}'>";
+					$time_now_for_datetime = gmdate('Y-m-d\TH:i:s');
+					echo "<input id='datetime' name='datetime' type='datetime-local' value='{$time_now_for_datetime}' step='1'>";
+					echo '<input type=submit name=selectedUserAction value="Выбрать">';
+					echo '</form>';
+					echo "</td>";
+					*/
+					echo "</tr>";
+					echo "</tbody>";
+					
+				}
+
+				echo "</table>";
 			}
 		}
 	}
 }
 
+if(isset($_POST['squadChangeMap']))
+{
+	$server->endMatch();
+}
+
+if(isset($_POST['squadUserAction']))
+{
+	$action = $_POST['squadUserAction'];
+	$reason = $_POST['reason'];
+	$datetime =  $_POST['datetime'];
+	
+	$steamid = explode("_", $action);
+	
+	$time_now_utc = gmdate('Y-m-d H:i:s');
+	$time_selected_utc = strftime('%Y-%m-%d %H:%M:%S', strtotime($datetime));
+
+	$start_date = new DateTime( $time_now_utc );
+	$end_date = new DateTime( $time_selected_utc );
+
+	$time_for_server =  $end_date->getTimestamp() - $start_date->getTimestamp();
+
+	
+	if($action == "") 
+	{
+		$errorMessage .= "<p>Вы забыли выбрать Действие!</p>";
+	}
+	else
+	{
+		$warn = 'warn';
+		$kick = 'kick';
+		$ban = 'ban';
+		
+		if (preg_match("/{$warn}/i", $action))
+		{
+			$server->adminBroadcast($reason);
+		}
+		if (preg_match("/{$kick}/i", $action))
+		{
+			$reason_text_kick = 'Кик: ' . ' ' . $reason;
+			$server->kick($steamid[1],$reason_text_kick);
+		}
+		if (preg_match("/{$ban}/i", $action))
+		{
+			$reason_text_kick = 'Бан-' . 'Причина: '. $reason . ' До: ' . $time_selected_utc;
+			$server->ban($steamid[1],$time_for_server,$reason_text_kick);
+		}
+		
+	}
+}
 
 echo $errorMessage;
 
