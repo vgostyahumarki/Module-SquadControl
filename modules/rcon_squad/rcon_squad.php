@@ -36,12 +36,6 @@ function exec_ogp_module()
 
 	$server_homes = $db->getIpPorts();
 	
-	$server = new SquadServer(new ServerConnectionInfo('92.63.110.116', 21114, 'c3qlgpyu'));
-	$map = $server->currentMap();
-	$players = $server->listPlayers();
-	
-	
-	
 	if ( !$server_homes )
 	{
 		return;
