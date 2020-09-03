@@ -41,7 +41,30 @@ function exec_ogp_module()
 		return;
 	}
 ?>
+<script src="modules/rcon_squad/include/js/sorttable.js"></script>
+<script>
+function searchFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("searchBox");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("playerList");
+  tr = table.getElementsByTagName("tr");
 
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
 <h2>
 	<?php print_lang('rcon_command_title'); 
 
@@ -136,7 +159,8 @@ if(isset($_POST['selectedSquadServer']))
 				echo "<center><p>";
 				print_lang('LIST_PLAYERS'); 
 				echo "<p></center>";
-				echo "<table class='squad_table'>";
+				echo "<input type='text' id='searchBox' onkeyup='searchFunction()' placeholder='Поиск..'>";
+				echo "<table class='sortable'>";
 				echo "<thead>";
 				echo "<tr>";
 				echo "<th>ID</th>";
@@ -150,13 +174,13 @@ if(isset($_POST['selectedSquadServer']))
 				echo "</tr>";
 				echo "</thead>";
 				
+				echo "<tbody>";
 				foreach($players as $player)
 				{
 					$player_id = $reader($player,'id');
 					$player_name = $reader($player,'name');
 					$steam_id = $reader($player,'steamId');
 					
-					echo "<tbody>";
 					echo "<tr>";
 					echo "<td><center>{$player_id}</center></td>";
 					echo "<td>{$player_name}</td>";
@@ -215,10 +239,9 @@ if(isset($_POST['selectedSquadServer']))
 					echo "</td>";
 									
 					echo "</tr>";
-					echo "</tbody>";
 				
 				}
-								
+				echo "</tbody>";	
 				echo "</table>";
 				
 				echo "<br>";
@@ -338,4 +361,5 @@ echo $errorMessage;
 <style>
 form {display: inline-flex;}
 .form-control {width: auto}
+th {cursor: pointer;}
 </style>
