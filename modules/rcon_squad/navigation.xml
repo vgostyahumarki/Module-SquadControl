@@ -1,4 +1,4 @@
 <navigation>
   <page key="rcon_squad_admin" file="rcon_squad_admin.php" access="admin" />
-  <page key="rcon_squad_user" file="rcon_squad_user.php" access="user" />
+  <page key="rcon_squad_user" file="rcon_squad_user.php" access="user,admin" />
 </navigation>

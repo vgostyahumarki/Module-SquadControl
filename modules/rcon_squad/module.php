@@ -30,7 +30,7 @@ $module_required = TRUE;
 $module_menus =
 	array( 
 		array( 'subpage' => 'rcon_squad_admin', 'name'=>'RCON SQUAD Настройки', 'group'=>'admin' ),
-		array( 'subpage' => 'rcon_squad_user', 'name'=>'RCON SQUAD', 'group'=>'user' )
+		array( 'subpage' => 'rcon_squad_user', 'name'=>'RCON SQUAD', 'group'=>'user','admin' )
 	);
 ?>
 
