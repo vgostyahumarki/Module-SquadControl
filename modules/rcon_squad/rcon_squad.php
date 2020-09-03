@@ -364,4 +364,14 @@ echo $errorMessage;
 form {display: inline-flex;}
 .form-control {width: auto}
 th {cursor: pointer;}
+#searchBox {
+  background-image: url('modules/rcon_squad/include/img/search.png'); /* Add a search icon to input */
+  background-position: 10px center; /* Position the search icon */
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 25%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+}
 </style>
