@@ -159,8 +159,10 @@ if(isset($_POST['selectedSquadServer']))
 				echo "<center><p>";
 				print_lang('LIST_PLAYERS'); 
 				echo "<p></center>";
-				echo "<input type='text' id='searchBox' onkeyup='searchFunction()' placeholder='Поиск..'>";
-				echo "<table class='sortable'>";
+				echo "<input type='text' id='searchBox' onkeyup='searchFunction()' placeholder='";
+				print_lang('SEARCH'); 
+				echo "'>";
+				echo "<table id= 'playerList' class='sortable'>";
 				echo "<thead>";
 				echo "<tr>";
 				echo "<th>ID</th>";

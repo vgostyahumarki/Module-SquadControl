@@ -39,4 +39,5 @@ define('OGP_LANG_ACTION_CHOOSE',"Выберите Действие...");
 define('OGP_LANG_ACTION_WARN',"Предупредить");
 define('OGP_LANG_ACTION_KICK',"Кикнуть");
 define('OGP_LANG_ACTION_BAN',"Бан");
+define('OGP_LANG_SEARCH',"Поиск...");
 ?>
